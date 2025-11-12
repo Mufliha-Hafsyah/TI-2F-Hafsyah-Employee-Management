@@ -104,5 +104,19 @@ class EmployeeModel {
         $stmt = $this->conn->prepare($query);
         return $stmt->execute();
     }
+
+    //METHOD 10: Statistik Gaji per Departemen
+    public function getSalaryStatsPerDepartment() {
+        $query = "SELECT department, 
+                        ROUND(AVG(salary), 2) as avg_salary,
+                        MAX(salary) as max_salary,
+                        MIN(salary) as min_salary
+                FROM employees
+                GROUP BY department
+                ORDER BY avg_salary DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
 }
 ?>
