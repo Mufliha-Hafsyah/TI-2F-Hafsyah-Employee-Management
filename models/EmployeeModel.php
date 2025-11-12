@@ -118,5 +118,22 @@ class EmployeeModel {
         $stmt->execute();
         return $stmt;
     }
+
+     //METHOD 11: Statistik Masa Kerja
+    public function getTenureStats() {
+        $query = "SELECT
+                    CASE
+                        WHEN EXTRACT(YEAR FROM AGE (CURRENT_DATE, hire_date)) >= 3 THEN 'Senior (> 3 Tahun)'
+                        WHEN EXTRACT(YEAR FROM AGE (CURRENT_DATE, hire_date)) >= 1 THEN 'Intermediate (1 - 3 Tahun)'
+                        ELSE 'Junior (< 1 Tahun)'
+                    END AS experience_level,
+                    COUNT(*) as total_employees
+                FROM employees
+                GROUP BY experience_level
+                ORDER BY total_employees DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
 }
 ?>
